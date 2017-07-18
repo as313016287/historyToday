@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<meta name="author" content="David Bushell">
+    
+
+		<title>Document</title>
+		<link rel="stylesheet" href="jq插件/Pikaday-master20160529/css/pikaday.css">
+    	<link rel="stylesheet" href="jq插件/Pikaday-master20160529/css/site.css">
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="template.js"></script>
+		<script type="text/html" id="history">
+			{{if result}}
+				<ul>
+				{{each result as d}}
+					<li> {{ d.date }} </li>
+					<li> {{ d.title }} </li>
+				{{/each}}
+				</ul>
+			{{/if}}
+		</script>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			iframe{ border-width: 0px; width: 100%; }
+
+			html,body{
+				font-family: "微软雅黑";
+				width: 100%;
+			}
+			ul,li{
+				list-style: none;
+			}
+			#datepicker-3months-right{
+				outline: none;
+				border-radius: 2rem;
+				font-weight: 700;
+				text-align: center;
+			}
+			#btn{
+				margin: 1.2em 0 1.2em 0;
+    			padding: 0.5em;
+    			border: none;
+    			outline: none;
+    			border-radius: 2rem;
+    			text-align: center;
+    			background-color: #ff4050;
+    			color: whitesmoke;
+    			width: 8rem;
+			}
+			#info{
+				width: 100%;
+			}
+			#info > ul{
+				width: 100%;
+			}
+			#info > ul > li{
+				width: 100%;
+				height: 2rem;
+				font-family: "微软雅黑";
+			}
+			#info > ul > li:nth-of-type( 2n-1 ){
+				color: indianred;
+			}
+			#info > ul > li:nth-of-type( 2n ){
+				color: #144a6b;
+			}
+		</style>
+	</head>
+
+	<body>
+		<label for="datepicker">请点击左侧文本框选择日期，查询往年今日发生的历史大事件</label>
+    	<br>
+    	<!--<input type="text" id="datepicker">-->
+		
+   		<!--<iframe src="jq插件/Pikaday-master20160529/examples/date-range.html" style="height:400px"></iframe>
+   		<iframe src="jq插件/Pikaday-master20160529/examples/calendars.html" style="height:600px"></iframe>-->
+		<input type="text" id="datepicker-3months-right">
+		<input type="button" name="" id="btn" value="时空胶囊启动" />
+		<br />
+		<h1 id="bt"></h1>
+		<div id="info">
+			
+		</div>
+		<script src="jq插件/Pikaday-master20160529/pikaday.js"></script>
+
+		<script type="text/javascript">
+			
+	   		 /*var picker = new Pikaday(
+	    		{
+			        field: document.getElementById('datepicker'),
+			        firstDay: 1,
+			        minDate: new Date(),
+			        maxDate: new Date(2020, 12, 31),
+			        yearRange: [2000,2020]
+			    });*/
+			var picker3monthsRight = new Pikaday(
+			    {
+			        numberOfMonths: 3,
+			        mainCalendar: 'right',
+			        field: document.getElementById('datepicker-3months-right'),
+			        firstDay: 1,
+			        minDate: new Date(2000, 0, 1),
+			        maxDate: new Date(2020, 12, 31),
+			        yearRange: [2000, 2020]
+			    });
+			$(function() {
+				function get(day) {
+					$.ajax({
+						type: "get",
+						url: "http://v.juhe.cn/todayOnhistory/queryEvent.php",
+						async: true,
+						dataType: "jsonp",
+						data: {
+							key: "33bd0da72a031eaa8ccfd402da63be0f",
+							date: day
+						},
+						success: function(data) {
+							$( "#info" ).html();
+							var html = template( "history", data );
+							$( "#info" ).html( html );
+							$( "#btn" ).value = "时光胶囊启动";
+						}
+					});
+				}
+				$( "#btn" ).click( function (){
+					this.value = "穿越中...";
+					var str = $( "#datepicker-3months-right" ).val();
+					var arr = [];
+					arr = str.split(" ");
+					var res = "",
+						month,
+						num;
+					if ( arr[1] === "Jan"){
+						month = 1;
+					} else if ( arr[1] === "Feb"){
+						month = 2;
+					} else if ( arr[1] === "Mar"){
+						month = 3;
+					} else if ( arr[1] === "Apr"){
+						month = 4;
+					} else if ( arr[1] === "May"){
+						month = 5;
+					} else if ( arr[1] === "Jun"){
+						month = 6;
+					} else if ( arr[1] === "Jul"){
+						month = 7;
+					} else if ( arr[1] === "Aug"){
+						month = 8;
+					} else if ( arr[1] === "Sep"){
+						month = 9;
+					} else if ( arr[1] === "Oct"){
+						month = 10;
+					} else if ( arr[1] === "Nov"){
+						month = 11;
+					} else if ( arr[1] === "Dec"){
+						month = 12;
+					}
+					if ( arr[2] === "01" ){
+						num = 1;
+					} else if ( arr[2] === "02" ){
+						num = 2;
+					} else if ( arr[2] === "03" ){
+						num = 3;
+					} else if ( arr[2] === "04" ){
+						num = 4;
+					} else if ( arr[2] === "05" ){
+						num = 5;
+					} else if ( arr[2] === "06" ){
+						num = 6;
+					} else if ( arr[2] === "07" ){
+						num = 7;
+					} else if ( arr[2] === "08" ){
+						num = 8;
+					} else if ( arr[2] === "09" ){
+						num = 9;
+					} else {
+						num = arr[2];
+					}
+					res = month+"/" + num;
+					$( "#bt" ).html( res );
+					get( res );
+				})
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <title>Pikaday</title>
+    <meta name="author" content="David Bushell">
+    <link rel="stylesheet" href="css/pikaday.css">
+    <link rel="stylesheet" href="css/site.css">
+    <style>
+    	iframe{ border-width: 0px; width: 100%; }
+    </style>
+</head>
+<body>
+    <h1>Pikaday</h1>
+
+    <p class="large">A refreshing JavaScript Datepicker — lightweight, no dependencies, modular CSS.</p>
+<label for="datepicker">Date:</label>
+    <br>
+    <input type="text" id="datepicker">
+
+   <iframe src="examples/bound-container.html" style="height:400px"></iframe>
+   <iframe src="examples/calendars.html" style="height:600px"></iframe>
+
+
+<script src="pikaday.js"></script>
+    <script>
+
+    var picker = new Pikaday(
+    {
+        field: document.getElementById('datepicker'),
+        firstDay: 1,
+        minDate: new Date(),
+        maxDate: new Date(2020, 12, 31),
+        yearRange: [2000,2020]
+    });
+
+    </script>
+</body>
+</html>
